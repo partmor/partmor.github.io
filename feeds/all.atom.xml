@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>partmor's log</title><link href="https://partmor.github.io/" rel="alternate"></link><link href="https://partmor.github.io/feeds/all.atom.xml" rel="self"></link><id>https://partmor.github.io/</id><updated>2020-08-05T00:00:00+02:00</updated><entry><title>Overpowering your Duck</title><link href="https://partmor.github.io/overpowering-your-duck.html" rel="alternate"></link><published>2020-08-05T00:00:00+02:00</published><updated>2020-08-05T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-08-05:/overpowering-your-duck.html</id><summary type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#a-naive-solution"&gt;A naive solution&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#protocols"&gt;Protocols!&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#warning"&gt;Warning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#conclusion"&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="a-naive-solution"&gt;A &lt;em&gt;naive&lt;/em&gt; solution&lt;/h2&gt;
+&lt;p&gt;You could go for an abstract &lt;code&gt;BaseQuacker&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;abc&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ABC&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;abstractmethod&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;BaseQuacker&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ABC&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="nd"&gt;@abstractmethod&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and make &lt;code&gt;Duck&lt;/code&gt;, &lt;code&gt;Goose&lt;/code&gt; and friends inherit from &lt;code&gt;BaseQuacker&lt;/code&gt;. Now you can annotate your object-of-interest as a &lt;code&gt;BaseQuacker&lt;/code&gt; and let the gods of polymorphism do their work:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseQuacker&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;quaack&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Goose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseQuacker&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;hoooonk&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;make_it_quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quacker&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;BaseQuacker&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="c1"&gt;# ...&lt;/span&gt;
+    &lt;span class="n"&gt;quacker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;make_it_quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;  &lt;span class="c1"&gt;# Passes static type check&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;What you are actually doing here is relying on &lt;a href="[https://en.wikipedia.org/wiki/Nominal_type_system](https://en.wikipedia.org/wiki/Nominal_type_system)"&gt;&lt;strong&gt;nominal subtyping&lt;/strong&gt;&lt;/a&gt; for your type checking.&lt;/p&gt;
+&lt;p&gt;Now think carefully, we have gone through the hassle of creating a base abstract class and making multiple classes inherit from it just to be able to type-check a method. &lt;em&gt;Are you gonna leave that untested?&lt;/em&gt; - &lt;em&gt;Nervous laughter intensifies.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Could we be more explicit and &lt;em&gt;faithful&lt;/em&gt; to our original intent, that is expressing &lt;em&gt;"hey, please check this thing here can quack"&lt;/em&gt;, without unnecessarilly increasing the complexity of our code and potentially introducing bugs?&lt;/p&gt;
+&lt;h2 id="protocols"&gt;Protocols!&lt;/h2&gt;
+&lt;p&gt;Python's &lt;a href="[https://docs.python.org/3/library/typing.html](https://docs.python.org/3/library/typing.html)"&gt;&lt;code&gt;typing&lt;/code&gt;&lt;/a&gt; module and Mypy provide support for &lt;a href="[https://en.wikipedia.org/wiki/Structural_type_system](https://en.wikipedia.org/wiki/Structural_type_system)"&gt;&lt;strong&gt;structural subtyping&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Structural subtyping can be seen as a static equivalent of duck typing.&lt;/p&gt;
+&lt;p&gt;-- &lt;cite&gt; Mypy &lt;a href="[https://mypy.readthedocs.io/en/stable/protocols.html](https://mypy.readthedocs.io/en/stable/protocols.html)"&gt;documentation&lt;/a&gt; &lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;By annotating an object with a &lt;code&gt;Protocol&lt;/code&gt; subtype you are just telling the type checker: &lt;em&gt;"hey, this object should &lt;strong&gt;at least&lt;/strong&gt; have the behaviour (methods) specified by the protocol"&lt;/em&gt;. &lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;In fact, Python provides a handful of built-in protocols (you may have even used them already), such as &lt;code&gt;Iterable[T]&lt;/code&gt; for classes that are expected to implement an &lt;code&gt;__iter__&lt;/code&gt; method that &lt;em&gt;yields&lt;/em&gt; objects of type &lt;code&gt;T&lt;/code&gt;, for instance.&lt;/p&gt;
+&lt;p&gt;Back to our example, we would declare a &lt;code&gt;Quacker&lt;/code&gt; protocol that enforces the presence of a &lt;code&gt;quack&lt;/code&gt; method:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Protocol&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Quacker&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Protocol&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we need not use inheritance on &lt;code&gt;Duck&lt;/code&gt;, &lt;code&gt;Goose&lt;/code&gt; and friends, ending up with something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="c1"&gt;# no inheritance!&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;quaack&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Goose&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="c1"&gt;# no inheritance!&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;hoooonk&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;make_it_quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quacker&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Quacker&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="c1"&gt;# ...&lt;/span&gt;
+    &lt;span class="n"&gt;quacker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;quack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;make_it_quack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Goose&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="c1"&gt;# Passes static type check&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id="warning"&gt;Warning&lt;/h3&gt;
+&lt;p&gt;If you want to use protocols beyond type checking, e.g. at &lt;strong&gt;runtime&lt;/strong&gt; with &lt;code&gt;isinstance()&lt;/code&gt;, you should decorate the &lt;code&gt;Protocol&lt;/code&gt; class definition with the &lt;code&gt;typing.runtime_checkable()&lt;/code&gt; decorator.&lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt; Furthermore:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Protocol classes decorated with &lt;code&gt;runtime_checkable()&lt;/code&gt;  act as simple-minded runtime protocols that check only the presence of given attributes, &lt;strong&gt;ignoring their type signatures&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;-- &lt;cite&gt; Python &lt;a href="https://docs.python.org/3/library/typing.html#typing.Protocol"&gt;documentation&lt;/a&gt; &lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;Yikes&lt;/em&gt;. So be careful in this case!&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Python's &lt;a href="https://docs.python.org/3/library/typing.html"&gt;&lt;code&gt;typing.Protocol&lt;/code&gt;&lt;/a&gt; together with Mypy provides you the ability of type-checking your code with &lt;em&gt;structural subtyping&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This is useful when you are interested in &lt;strong&gt;annotating&lt;/strong&gt; an object according to a specific &lt;strong&gt;behaviour&lt;/strong&gt;, or by abuse of notation: when you want to do &lt;strong&gt;static duck typing&lt;/strong&gt;.&lt;sup id="fnref:4"&gt;&lt;a class="footnote-ref" href="#fn:4"&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;If you want to use protocols beyond type-checking, i.e., at &lt;strong&gt;runtime&lt;/strong&gt;, you need to use the &lt;a href="https://docs.python.org/3/library/typing.html#typing.runtime_checkable"&gt;&lt;code&gt;typing.runtime_checkable()&lt;/code&gt;&lt;/a&gt;
+decorator, but this comes with &lt;strong&gt;shortcomings&lt;/strong&gt; (checking just for method existence, not signature).&lt;/p&gt;
+&lt;p&gt;You can find a handful of &lt;strong&gt;built-in&lt;/strong&gt; protocols &lt;a href="[https://mypy.readthedocs.io/en/stable/protocols.html#predefined-protocols](https://mypy.readthedocs.io/en/stable/protocols.html#predefined-protocols)"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;In this post I'm assuming geese quack, don't @ me.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;In the context of type annotation, I think of &lt;code&gt;typing.Protocol&lt;/code&gt; as an equivalent to the &lt;em&gt;interfaces&lt;/em&gt; of languages like C# (&lt;em&gt;take with a grain of salt&lt;/em&gt; - remember, they are &lt;em&gt;just&lt;/em&gt; type hints).&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:3"&gt;
+&lt;p&gt;&lt;a href="https://docs.python.org/3/library/typing.html#typing.runtime_checkable"&gt;https://docs.python.org/3/library/typing.html#typing.runtime_checkable&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:4"&gt;
+&lt;p&gt;This could have been the title but I feared receiving threats from theorists. Jk, who cares.&amp;#160;&lt;a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Programming"></category><category term="Python"></category><category term="Mypy"></category></entry></feed>
