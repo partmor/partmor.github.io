@@ -1110,7 +1110,13 @@ h6:hover .anchor-link {
  .highlight pre  .vg { color: #19177C } /* Name.Variable.Global */
  .highlight pre  .vi { color: #19177C } /* Name.Variable.Instance */
  .highlight pre  .vm { color: #19177C } /* Name.Variable.Magic */
- .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+ .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"&gt;&lt;/script&gt;
+
+&lt;style type="text/css"&gt;
+.rendered_html a{text-decoration:inherit !important}.rendered_html :link{text-decoration:inherit !important}.rendered_html :visited{text-decoration:inherit !important}.rendered_html pre{background-color:#1a1a1a}pre code{background-color:inherit !important}.highlight{color:#000000}.highlight code{color:#000000}.highlight .n{color:#333333}.highlight .p{color:#000000}.text_cell .prompt{display:none !important}div.input_prompt{padding:0.2em 0.4em}div.output_prompt{padding:0.4em}.text_cell{margin:0 !important;padding:0 !important;border:none !important}.text_cell_render{margin:0 !important;padding:0 !important;border:none !important}.rendered_html *+p{margin-top:inherit !important}.anchor-link{display:none !important}.code_cell{margin:0 !important;padding:5px 0 !important;border:none !important}div.input_area&gt;div.highlight{margin:0.25em 0.4em !important}.code_cell pre{font-size:12px !important}.output_html table.dataframe{font-family:Arial, sans-serif;font-size:13px;line-height:20px}.output_html table.dataframe th,td{padding:4px;text-align:left}.bk-plot-wrapper tbody tr{background:none !important}.bk-plot-wrapper tbody tr:hover{background:none !important}
+
+&lt;/style&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;When using Pandas in production environments for highly-performant tabular data manipulations, we want to &lt;em&gt;get things right&lt;/em&gt;. In particular, we don't want to get screwed by silent and potentially deadly &lt;em&gt;mechanisms&lt;/em&gt; like &lt;strong&gt;implicit type conversion&lt;/strong&gt;.&lt;/p&gt;
@@ -2682,6 +2688,14 @@ dtype: object&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;&lt;em&gt;You can download the notebook used in this post &lt;a href="https://partmor.github.io/articles/pandas_typing.ipynb"&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
  
 
 
@@ -2713,9 +2727,7 @@ dtype: object&lt;/pre&gt;
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-
-
-&lt;p&gt;&lt;em&gt;You can download the notebook used in this post &lt;a href="downloads/notebooks/pandas_typing.ipynb"&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;</content><category term="Programming"></category><category term="Python"></category><category term="Pandas"></category></entry><entry><title>Overpowering your Duck</title><link href="https://partmor.github.io/overpowering-your-duck.html" rel="alternate"></link><published>2020-08-05T00:00:00+02:00</published><updated>2020-08-05T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-08-05:/overpowering-your-duck.html</id><summary type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
+</content><category term="Programming"></category><category term="Python"></category><category term="Pandas"></category></entry><entry><title>Overpowering your Duck</title><link href="https://partmor.github.io/overpowering-your-duck.html" rel="alternate"></link><published>2020-08-05T00:00:00+02:00</published><updated>2020-08-05T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-08-05:/overpowering-your-duck.html</id><summary type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;

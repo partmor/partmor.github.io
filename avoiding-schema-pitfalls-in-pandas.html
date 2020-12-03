@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<html lang="en">
 <head>
     <title>Avoiding schema pitfalls in Pandas - partmor's log</title>
     <!-- Using the latest rendering mode for IE -->
@@ -16,16 +16,6 @@
         <meta name="keywords" content="Python,Pandas" />
         <meta name="description" content="When using Pandas in production environments for highly-performant tabular data manipulations, we want to get things right. In particular, we would like to avoid the dangers of silent and potentially deadly mechanisms like implicit type conversion." />
 
-        <meta property="og:site_name" content="partmor's log" />
-        <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Avoiding schema pitfalls in Pandas"/>
-        <meta property="og:url" content="https://partmor.github.io/avoiding-schema-pitfalls-in-pandas.html"/>
-        <meta property="og:description" content="When using Pandas in production environments for highly-performant tabular data manipulations, we want to get things right. In particular, we would like to avoid the dangers of silent and potentially deadly mechanisms like implicit type conversion."/>
-        <meta property="article:published_time" content="2020-09-21" />
-            <meta property="article:section" content="Programming" />
-            <meta property="article:tag" content="Python" />
-            <meta property="article:tag" content="Pandas" />
-            <meta property="article:author" content="Pedro Morales" />
 
 
 
@@ -33,7 +23,7 @@
         <link rel="stylesheet" href="https://partmor.github.io/theme/css/bootstrap.min.css" type="text/css"/>
     <link href="https://partmor.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="https://partmor.github.io/theme/css/pygments/solarizedlight.css" rel="stylesheet">
+    <link href="https://partmor.github.io/theme/css/pygments/friendly.css" rel="stylesheet">
     <link rel="stylesheet" href="https://partmor.github.io/theme/css/style.css" type="text/css"/>
 
         <link href="https://partmor.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
@@ -41,6 +31,10 @@
 
         <link href="https://partmor.github.io/feeds/programming.atom.xml" type="application/atom+xml" rel="alternate"
               title="partmor's log Programming ATOM Feed"/>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -1219,7 +1213,13 @@ h6:hover .anchor-link {
  .highlight pre  .vg { color: #19177C } /* Name.Variable.Global */
  .highlight pre  .vi { color: #19177C } /* Name.Variable.Instance */
  .highlight pre  .vm { color: #19177C } /* Name.Variable.Magic */
- .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+ .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style type="text/css">
+.rendered_html a{text-decoration:inherit !important}.rendered_html :link{text-decoration:inherit !important}.rendered_html :visited{text-decoration:inherit !important}.rendered_html pre{background-color:#1a1a1a}pre code{background-color:inherit !important}.highlight{color:#000000}.highlight code{color:#000000}.highlight .n{color:#333333}.highlight .p{color:#000000}.text_cell .prompt{display:none !important}div.input_prompt{padding:0.2em 0.4em}div.output_prompt{padding:0.4em}.text_cell{margin:0 !important;padding:0 !important;border:none !important}.text_cell_render{margin:0 !important;padding:0 !important;border:none !important}.rendered_html *+p{margin-top:inherit !important}.anchor-link{display:none !important}.code_cell{margin:0 !important;padding:5px 0 !important;border:none !important}div.input_area>div.highlight{margin:0.25em 0.4em !important}.code_cell pre{font-size:12px !important}.output_html table.dataframe{font-family:Arial, sans-serif;font-size:13px;line-height:20px}.output_html table.dataframe th,td{padding:4px;text-align:left}.bk-plot-wrapper tbody tr{background:none !important}.bk-plot-wrapper tbody tr:hover{background:none !important}
+
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When using Pandas in production environments for highly-performant tabular data manipulations, we want to <em>get things right</em>. In particular, we don't want to get screwed by silent and potentially deadly <em>mechanisms</em> like <strong>implicit type conversion</strong>.</p>
@@ -2791,6 +2791,14 @@ dtype: object</pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>You can download the notebook used in this post <a href="https://partmor.github.io/articles/pandas_typing.ipynb">here</a>.</em></p>
+
+</div>
+</div>
+</div>
  
 
 
@@ -2823,8 +2831,6 @@ dtype: object</pre>
 }
 </script>
 
-
-<p><em>You can download the notebook used in this post <a href="downloads/notebooks/pandas_typing.ipynb">here</a>.</em></p>
             </div>
             <!-- /.entry-content -->
         </article>
