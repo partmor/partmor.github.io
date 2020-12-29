@@ -2728,9 +2728,13 @@ dtype: object&lt;/pre&gt;
 }
 &lt;/script&gt;
 </content><category term="Programming"></category><category term="Python"></category><category term="Pandas"></category></entry><entry><title>Overpowering your Duck</title><link href="https://partmor.github.io/overpowering-your-duck.html" rel="alternate"></link><published>2020-08-05T00:00:00+02:00</published><updated>2020-08-05T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-08-05:/overpowering-your-duck.html</id><summary type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;
+
+
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#a-naive-solution"&gt;A naive solution&lt;/a&gt;&lt;/li&gt;

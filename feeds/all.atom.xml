@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>partmor's log</title><link href="https://partmor.github.io/" rel="alternate"></link><link href="https://partmor.github.io/feeds/all.atom.xml" rel="self"></link><id>https://partmor.github.io/</id><updated>2020-09-21T00:00:00+02:00</updated><entry><title>Avoiding schema pitfalls in Pandas</title><link href="https://partmor.github.io/avoiding-schema-pitfalls-in-pandas.html" rel="alternate"></link><published>2020-09-21T00:00:00+02:00</published><updated>2020-09-21T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-09-21:/avoiding-schema-pitfalls-in-pandas.html</id><summary type="html">&lt;p&gt;When using Pandas in production environments for highly-performant tabular data manipulations, we want to &lt;em&gt;get things right&lt;/em&gt;. In particular, we would like to avoid the dangers of silent and potentially deadly mechanisms like implicit type conversion.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>partmor's log</title><link href="https://partmor.github.io/" rel="alternate"></link><link href="https://partmor.github.io/feeds/all.atom.xml" rel="self"></link><id>https://partmor.github.io/</id><updated>2020-12-29T00:00:00+01:00</updated><entry><title>Concatenating text files in Python</title><link href="https://partmor.github.io/concatenating-text-files-in-python.html" rel="alternate"></link><published>2020-12-29T00:00:00+01:00</published><updated>2020-12-29T00:00:00+01:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-12-29:/concatenating-text-files-in-python.html</id><summary type="html">&lt;p&gt;We can use the built-in &lt;a href="https://docs.python.org/3/library/fileinput.html"&gt;&lt;code&gt;inputfile&lt;/code&gt;&lt;/a&gt; module 
+to concatenate files while optionally applying filters and transformations to each line, without abusing nested 
+&lt;code&gt;with&lt;/code&gt; blocks and &lt;code&gt;for&lt;/code&gt; loops.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;We can use the built-in &lt;a href="https://docs.python.org/3/library/fileinput.html"&gt;&lt;code&gt;inputfile&lt;/code&gt;&lt;/a&gt; module 
+to concatenate files while optionally applying filters and transformations to each line, without abusing nested 
+&lt;code&gt;with&lt;/code&gt; blocks and &lt;code&gt;for&lt;/code&gt; loops.&lt;/p&gt;
+
+
+&lt;p&gt;It combines nicely with &lt;code&gt;glob.glob()&lt;/code&gt;, to merge and transform files with a given name pattern:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;fileinput&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;glob&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="c1"&gt;# do something with line&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;
+
+&lt;span class="n"&gt;fnames&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;*.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;fileinput&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fnames&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f_in&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;out.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;w+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f_out&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;f_in&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;f_out&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;hr&gt;
+&lt;p&gt;Note that the &lt;em&gt;naive&lt;/em&gt; way of implementing the merge-transform operation would look something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;out.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;w+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f_out&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;fnames&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f_in&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;f_in&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We observe the latter introduces at least an additional &lt;code&gt;for&lt;/code&gt; loop, and a nested &lt;code&gt;with&lt;/code&gt; block.&lt;/p&gt;</content><category term="Self-notes"></category><category term="Python"></category></entry><entry><title>Avoiding schema pitfalls in Pandas</title><link href="https://partmor.github.io/avoiding-schema-pitfalls-in-pandas.html" rel="alternate"></link><published>2020-09-21T00:00:00+02:00</published><updated>2020-09-21T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-09-21:/avoiding-schema-pitfalls-in-pandas.html</id><summary type="html">&lt;p&gt;When using Pandas in production environments for highly-performant tabular data manipulations, we want to &lt;em&gt;get things right&lt;/em&gt;. In particular, we would like to avoid the dangers of silent and potentially deadly mechanisms like implicit type conversion.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -2728,9 +2761,13 @@ dtype: object&lt;/pre&gt;
 }
 &lt;/script&gt;
 </content><category term="Programming"></category><category term="Python"></category><category term="Pandas"></category></entry><entry><title>Overpowering your Duck</title><link href="https://partmor.github.io/overpowering-your-duck.html" rel="alternate"></link><published>2020-08-05T00:00:00+02:00</published><updated>2020-08-05T00:00:00+02:00</updated><author><name>Pedro Morales</name></author><id>tag:partmor.github.io,2020-08-05:/overpowering-your-duck.html</id><summary type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;While type-annotating your Python code, at some stage you might have felt that for a certain object in a given scope, you are not so much interested in its type as you are in its &lt;em&gt;behaviour&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You don't really mind if it's a &lt;code&gt;Duck&lt;/code&gt;, a &lt;code&gt;Goose&lt;/code&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, or even a &lt;code&gt;PersonDisguisedAsADuck&lt;/code&gt;, you (and your program) only care about its ability to &lt;code&gt;.quack()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;What could you do to support static type checking in this case?&lt;/p&gt;
+
+
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#a-naive-solution"&gt;A naive solution&lt;/a&gt;&lt;/li&gt;

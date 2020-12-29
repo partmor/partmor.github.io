@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pandas - partmor's log</title>
+    <title>Concatenating text files in Python - partmor's log</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -10,9 +10,11 @@
 
     <link href="https://partmor.github.io/favicon.ico" rel="icon">
 
+<link rel="canonical" href="https://partmor.github.io/concatenating-text-files-in-python.html">
 
-    <meta name="author" content="Pedro Morales" />
-    <meta name="keywords" content="Pandas" />
+        <meta name="author" content="Pedro Morales" />
+        <meta name="keywords" content="Python" />
+        <meta name="description" content="We can use the built-in inputfile module to concatenate files while optionally applying filters and transformations to each line, without abusing nested with blocks and for loops." />
 
 
 
@@ -27,7 +29,8 @@
         <link href="https://partmor.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="partmor's log ATOM Feed"/>
 
-
+        <link href="https://partmor.github.io/feeds/self-notes.atom.xml" type="application/atom+xml" rel="alternate"
+              title="partmor's log Self-notes ATOM Feed"/>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
@@ -55,7 +58,7 @@
                         <li >
                             <a href="https://partmor.github.io/category/programming.html">Programming</a>
                         </li>
-                        <li >
+                        <li class="active">
                             <a href="https://partmor.github.io/category/self-notes.html">Self-notes</a>
                         </li>
             </ul>
@@ -74,13 +77,70 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-            <article>
-                <h2><a href="https://partmor.github.io/avoiding-schema-pitfalls-in-pandas.html">Avoiding schema pitfalls in Pandas</a></h2>
-                <div class="summary"><p>When using Pandas in production environments for highly-performant tabular data manipulations, we want to <em>get things right</em>. In particular, we would like to avoid the dangers of silent and potentially deadly mechanisms like implicit type conversion.</p>
-                    <a class="btn btn-default btn-xs" href="https://partmor.github.io/avoiding-schema-pitfalls-in-pandas.html">more ...</a>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="https://partmor.github.io/concatenating-text-files-in-python.html"
+                       rel="bookmark"
+                       title="Permalink to Concatenating text files in Python">
+                        Concatenating text files in Python
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2020-12-29T00:00:00+01:00"> Tue 29 December 2020</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://partmor.github.io/tag/python.html">Python</a>
+    
+</footer><!-- /.post-info -->                    </div>
                 </div>
-            </article>
-            <hr/>
+                <p>We can use the built-in <a href="https://docs.python.org/3/library/fileinput.html"><code>inputfile</code></a> module 
+to concatenate files while optionally applying filters and transformations to each line, without abusing nested 
+<code>with</code> blocks and <code>for</code> loops.</p>
+
+
+<p>It combines nicely with <code>glob.glob()</code>, to merge and transform files with a given name pattern:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fileinput</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="c1"># do something with line</span>
+    <span class="k">return</span> <span class="n">line</span>
+
+<span class="n">fnames</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.txt&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">fileinput</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">fnames</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_in</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;out.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_out</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f_in</span><span class="p">:</span>
+        <span class="n">f_out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">process</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+</pre></div>
+
+
+<hr>
+<p>Note that the <em>naive</em> way of implementing the merge-transform operation would look something like:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;out.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_out</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_in</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f_in</span><span class="p">:</span>
+                <span class="n">process</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We observe the latter introduces at least an additional <code>for</code> loop, and a nested <code>with</code> block.</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
 
         </div>
         <div class="col-sm-3" id="sidebar">
